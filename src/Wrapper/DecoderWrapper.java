@@ -25,6 +25,12 @@ public class DecoderWrapper {
             return null;
         }
         
+        for (int i = 0; i < totalShard; i++) {
+            if (!shardPresent[i]) {
+                shards[i] = new byte [shardSize];
+            }
+        }
+        
         ReedSolomon reedSolomon = ReedSolomon.create(dataShardNum, parityShardNum);
         reedSolomon.decodeMissing(shards, shardPresent, 0, shardSize);
         
@@ -84,7 +90,7 @@ public class DecoderWrapper {
         shardCount = 0;
         
         for(int i = 0; i < inputData.length; i++) {
-            if(inputData[i].length != 0) {
+            if(inputData[i] != null) {
                 shardPresent[i] = true;
                 shardSize = inputData[i].length;
                 shardCount++;

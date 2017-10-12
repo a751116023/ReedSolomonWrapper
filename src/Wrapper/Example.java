@@ -27,10 +27,6 @@ public class Example {
             System.out.println(e);
         }
         
-        DecoderWrapper decoderWrapper = DecoderWrapper.createDecoder();
-        
-        int [] testDataOut = decoderWrapper.decode(output);
-        
         System.out.print("TestData: { ");
         
         for(int elem : testData) {
@@ -40,9 +36,28 @@ public class Example {
         
         System.out.println("}");
         
-        System.out.print("output: { ");
+        System.out.print("Encoded Data: { ");
         
         for(byte[] elem : output) {
+            if(elem == null) continue;
+            for(byte elem2 : elem) {
+                System.out.print(elem2);
+                System.out.print(", ");
+            }
+        }
+        
+        output[1] = null;
+        
+        DecoderWrapper decoderWrapper = DecoderWrapper.createDecoder();
+        
+        int [] testDataOut = decoderWrapper.decode(output);
+        
+        System.out.println("}");
+        
+        System.out.print("Corrupted Data: { ");
+        
+        for(byte[] elem : output) {
+            if(elem == null) continue;
             for(byte elem2 : elem) {
                 System.out.print(elem2);
                 System.out.print(", ");
