@@ -1,6 +1,7 @@
 package Wrapper;
 
 import Algorithm.ReedSolomon;
+import java.nio.ByteBuffer;
 
 /**
  *
@@ -63,8 +64,8 @@ public class EncoderWrapper {
     
     private EncoderWrapper() {
         // Default Value
-        this.dataShardNum = 1;
-        this.parityShardNum = 0;
+        this.dataShardNum = 4;
+        this.parityShardNum = 2;
         
         calculateTotalShard();
     }
@@ -74,11 +75,12 @@ public class EncoderWrapper {
     }
     
     private byte [][] convertDataIntoByteShards(int [] inputData) {
-        byte [] byteData = new byte[inputData.length];
-        byte [] [] shards = new byte [totalShard] [shardSize];
+        byte [] byteData = new byte[dataShardNum * shardSize];
+        byte [][] shards = new byte [totalShard] [shardSize];
+        ByteBuffer.wrap(byteData).putInt(inputData.length);
         
         for(int i = 0; i < inputData.length; i++) {
-            byteData[i] = (byte)inputData[i];
+            byteData[i + BYTE_IN_INT] = (byte)inputData[i];
         }
         
         for (int i = 0; i < dataShardNum; i++) {
